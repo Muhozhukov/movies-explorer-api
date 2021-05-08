@@ -18,15 +18,6 @@ const errorHandle = (err, next) => {
   next(err);
 };
 
-const getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch((err) => {
-      errorHandle(err, next);
-    })
-    .catch(next);
-};
-
 const getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
@@ -35,21 +26,6 @@ const getUserInfo = (req, res, next) => {
       }
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.send(user);
-    })
-    .catch((err) => {
-      errorHandle(err, next);
-    })
-    .catch(next);
-};
-
-const getUserById = (req, res, next) => {
-  const { userId } = req.params;
-  User.findById(userId)
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Запрашиваемый ресурс не найден');
-      }
-      return res.send(user);
     })
     .catch((err) => {
       errorHandle(err, next);
@@ -114,27 +90,9 @@ const changeUserInfo = (req, res, next) => {
     .catch(next);
 };
 
-const changeUserAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Запрашиваемый ресурс не найден');
-      }
-      return res.send(user);
-    })
-    .catch((err) => {
-      errorHandle(err, next);
-    })
-    .catch(next);
-};
-
 module.exports = {
-  getUsers,
-  getUserById,
   createUser,
   changeUserInfo,
-  changeUserAvatar,
   login,
   getUserInfo,
 };

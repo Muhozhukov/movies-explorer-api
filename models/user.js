@@ -17,23 +17,10 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
+    required: [true, 'Поле "Имя" обязательно для заполнения'],
     default: 'Жак-Ив Кусто',
     minlength: [2, 'Имя не может быть короче 2 символов'],
     maxlength: 30,
-  },
-  about: {
-    type: String,
-    default: 'Исследователь',
-    minlength: [2, 'Описание не может быть короче 2 символов'],
-    maxlength: [30, 'Описание не может быть длиннее 30 символов'],
-  },
-  avatar: {
-    type: String,
-    validate: {
-      validator: (v) => /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])/igm.test(v),
-      message: 'Невалидная ссылка на изображение',
-    },
-    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
 });
 // eslint-disable-next-line func-names

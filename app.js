@@ -10,11 +10,10 @@ const router = require('./routes');
 const NotFoundError = require('./errors/NotFoundErrod');
 
 const { PORT = 3000 } = process.env;
-// const auth = require('./middlewares/auth');
 const { login, createUser } = require('./controllers/users');
 
 const app = express();
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/movie-explorer', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -30,11 +29,7 @@ app.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
-    name: Joi.string().min(2).max(30).default('Жак-ив Кусто'),
-    about: Joi.string().min(2).max(30).default('Исследователь океана'),
-    avatar: Joi.string()
-      .pattern(/^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[A-Z0-9+&@#/%=~_|$])$/im)
-      .default('https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png'),
+    name: Joi.string().min(2).max(30).required(),
   }),
 }), createUser);
 app.post('/signin', celebrate({
@@ -44,7 +39,6 @@ app.post('/signin', celebrate({
   }),
 }), login);
 
-// app.use(auth);
 app.use('/', router);
 app.use(() => {
   throw new NotFoundError('Запрашиваемый ресурс не найден');
