@@ -76,8 +76,8 @@ const login = (req, res, next) => {
 };
 
 const changeUserInfo = (req, res, next) => {
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, email }, { new: true })
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Запрашиваемый ресурс не найден');

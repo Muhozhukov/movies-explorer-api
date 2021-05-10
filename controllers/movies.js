@@ -55,13 +55,13 @@ const createMovie = (req, res, next) => {
 const deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   Movie.findById(movieId)
-    // eslint-disable-next-line consistent-return
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Запрашиваемый ресурс не найден');
       }
-      // eslint-disable-next-line eqeqeq
-      const movieIsMine = req.user._id == movie.owner;
+      const userId = req.user._id.toString();
+      const movieOwnerId = movie.owner._id.toString();
+      const movieIsMine = userId === movieOwnerId;
       if (movieIsMine) {
         Movie.findByIdAndRemove(movieId)
           .then((deletedMovies) => res.send(deletedMovies))
